@@ -19,6 +19,8 @@ var routes = require('./routes/index');
 
 var doors = require('./routes/doors');
 
+var permissions = require('./routes/permissions');
+
 var app = express();
 
 // view engine setup
@@ -37,6 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', routes);
 app.use('/doors-api', doors);
+app.use('/permissions-api',permissions);
 
 //models
 var Door = require('./models/doors');
@@ -46,7 +49,8 @@ DoorsResource.register(app, '/doors');
 
 
 var Permission = require('./models/permissions');
-var PermissionsResource = app.resouce = restful.model(Permission.model_name, Permission.schema)
+
+var PermissionsResource = restful.model(Permission.model_name, Permission.schema)
     .methods(['get', 'put', 'delete', 'post']);
 PermissionsResource.register(app, '/permissions');
 
@@ -56,6 +60,7 @@ var GoldoonResource = restful.model(Goldoon.model_name, Goldoon.schema).methods(
 GoldoonResource.register(app, '/goldoons')
 
 //question
+
 var Question = require('./models/question');
 var Questionresource = restful.model(Question.model_name, Question.schema)
 	.methods(['get', 'put', 'post', 'delete']);
@@ -97,6 +102,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
 app.listen(8080);
 console.log("Started");
+
 module.exports = app;
